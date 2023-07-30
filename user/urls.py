@@ -11,4 +11,5 @@ urlpatterns = [
     path('delete_user',User_actions.as_view(method_name = 'delete_user'),name='delete_user'),
     path('get_user',User_actions.as_view(method_name = 'get_user'),name='get_user'),
     path('update_user',User_actions.as_view(method_name = 'update_user'),name='update_user'),
+    path('logout_user',User_actions.as_view(method_name = 'logout_user'),name='logout_user'),
 ]

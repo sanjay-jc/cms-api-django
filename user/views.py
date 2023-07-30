@@ -170,6 +170,25 @@ class User_actions(Manage_base_view):
             data['message_en'] = "Please check the user details provided"
             data['detail'] = " "
             return Response(data)
+        
+
+    def logout_user(self,request,*args,**kwargs):
+        data = {}
+        try:
+            request.auth.delete()
+            logout(request)
+
+            data['status'] = 1
+            data['message_en'] = "Success"
+            data['detail'] = " "
+        except Exception as e: 
+
+            data['status'] = 0
+            data['message_en'] = "Fail"
+            data['detail'] = str(e)
+
+        return Response(data)
+
 
 
 
