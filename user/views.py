@@ -31,6 +31,7 @@ class User_actions(Manage_base_view):
             data['message_en'] = 'User registration successfull'
             data['email'] = user_instance.email
             data['username'] = user_instance.username
+            data['slug_field'] = user_instance.slug_field
             data['token'] = token
         else:
             data = serializer.errors
