@@ -13,6 +13,7 @@ venv/
 # mypy 
 .mypy_cache/
 
-**/migrations/*.py
-**/migrations/*.pyc
+**/migrations/**.py
+/migrations/**pyc
 **/__pycache__
+/media/*
