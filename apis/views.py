@@ -148,3 +148,47 @@ class Blog_actions(Manage_base_view):
             data['detail'] = ''
             return Response(data)
         
+
+class Like_actions(Manage_base_view):
+    permission_classes = [IsAuthenticated]
+
+    def create_like(self,request,*args,**kwargs):
+        data = {}
+        blog_id = request.data.get('slug_id')
+        print(blog_id)
+        blog = Blog_model.is_active.get(slug_field = blog_id)
+        like = Like.is_active.get_or_create(blog_id=blog,user_id = request.user)
+        
+        data['status']=1
+        data['message_en'] = "Success"
+        data['detail'] = ''
+        return Response(data)
+
+
+    def delete_like(self,request,*args,**kwargs):
+        data = {}
+        like_id = request.data.get('slug_id')
+        try:
+            like = Like.is_active.get(slug_field=like_id)
+        except Exception as e:
+            data['status']=0
+            data['message_en'] = "Fail"
+            data['detail'] = str(e)
+            return Response(data)
+
+        tokens = confirm_tokens(request.auth,like.user_id.get_token())
+            
+        if tokens:
+            like.delete()
+            data['status']=1
+            data['message_en'] = "Success"
+            data['detail'] = 'Delete success'
+            return Response(data)
+        else:
+            data['status']=0
+            data['message_en'] = "Fail"
+            data['detail'] = 'you are unauthorised to perform this operation'
+            return Response(data)
+
+
+

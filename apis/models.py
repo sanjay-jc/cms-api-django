@@ -1,8 +1,11 @@
 from django.db import models
-from core.utils import Base_model
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 import uuid
+
+# local imports
+
+from core.utils import Base_model
 user = get_user_model()
 
 class Blog_model(Base_model):
@@ -32,3 +35,12 @@ class Blog_model(Base_model):
 class Like(Base_model):
     blog_id = models.ForeignKey(Blog_model,on_delete=models.CASCADE)
     user_id = models.ForeignKey(user,on_delete=models.SET_NULL,null=True)
+    slug_field = models.SlugField(max_length=50,null=True,blank=True)
+
+    def save(self,*args,**kwargs):
+        if not self.slug_field:
+            self.slug_field = str(uuid.uuid4())[:10]
+        return super().save(*args,**kwargs)
+    
+
+
